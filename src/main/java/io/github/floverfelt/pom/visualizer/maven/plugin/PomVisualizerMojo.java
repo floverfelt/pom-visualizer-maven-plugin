@@ -2,6 +2,7 @@ package io.github.floverfelt.pom.visualizer.maven.plugin;
 
 
 import org.apache.maven.model.Plugin;
+import org.apache.maven.model.PluginExecution;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -33,7 +34,14 @@ public class PomVisualizerMojo extends AbstractMojo {
       getLog().info("No build plugins detected.");
     } else {
       buildPlugins.forEach(plugin -> {
-        System.out.println(String.format("Plugin: %s executions %s", plugin.getId(), plugin.getExecutions().size()));
+        //PluginExecution pluginExecution = plugin.getExecutions().get(0);
+        System.out.printf("Plugin: %s executions %s%n", plugin.getId(), plugin.getExecutions().size());
+        List<PluginExecution> pluginExecutions = plugin.getExecutions();
+        if (pluginExecutions.size() > 0) {
+          pluginExecutions.forEach(pluginExecution -> {
+            System.out.printf("\t Id: %s, Phase: %s, Priority: %s%n", pluginExecution.getId(), pluginExecution.getPhase(), pluginExecution.getPriority());
+          });
+        }
       });
     }
 

@@ -9,6 +9,26 @@
     <packaging>pom</packaging>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-shade-plugin</artifactId>
+                    <configuration>
+                        <!-- put your configurations here -->
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>id5-parent</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>shade</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
                 <artifactId>pom-visualizer-maven-plugin</artifactId>
@@ -18,20 +38,30 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.4</version>
                 <configuration>
                     <!-- put your configurations here -->
                 </configuration>
                 <executions>
                     <execution>
+                        <id>id2</id>
                         <phase>package</phase>
                         <goals>
                             <goal>shade</goal>
                         </goals>
                     </execution>
+                    <execution>
+                        <id>id1</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+
                 </executions>
             </plugin>
         </plugins>
+
     </build>
+
 
 </project>
