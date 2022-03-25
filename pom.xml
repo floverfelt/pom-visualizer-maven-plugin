@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>io.github.floverfelt</groupId>
+  <artifactId>pom-visualizer-maven-plugin</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>maven-plugin</packaging>
+
+  <name>Pom Visualizer Maven Plugin</name>
+  <description>A plugin for replacing content in files, filenames, and directories.</description>
+  <url>https://github.com/floverfelt/...</url>
+
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <name>Florian Overfelt</name>
+      <email>foverfelt@gmail.com</email>
+      <url>https://github.com/floverfelt</url>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:git://github.com/floverfelt/...</connection>
+    <developerConnection>scm:git:git@github.com:floverfelt/...</developerConnection>
+    <url>https://github.com/floverfelt/...</url>
+    <tag>HEAD</tag>
+  </scm>
+
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/floverfelt/...</url>
+  </issueManagement>
+
+  <distributionManagement>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+    <repository>
+      <id>ossrh</id>
+      <url>https://s01.oss.sonatype.org/content/repositories/releases/</url>
+    </repository>
+  </distributionManagement>
+
+  <properties>
+    <maven.javadoc.version>3.2.0</maven.javadoc.version>
+    <site.maven.plugin.version>0.12</site.maven.plugin.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <mvn.plugin-tools.version>3.6.4</mvn.plugin-tools.version>
+    <mvn.plugin.version>3.8.4</mvn.plugin.version>
+    <maven-compat.version>3.8.4</maven-compat.version>
+    <maven-plugin-testing-harness.version>3.3.0</maven-plugin-testing-harness.version>
+    <slf4j.version>1.7.36</slf4j.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-plugin-api</artifactId>
+      <version>${mvn.plugin.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-core</artifactId>
+      <version>${mvn.plugin.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.plugin-tools</groupId>
+      <artifactId>maven-plugin-annotations</artifactId>
+      <scope>provided</scope>
+      <version>${mvn.plugin-tools.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-compat</artifactId>
+      <version>${maven-compat.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.plugin-testing</groupId>
+      <artifactId>maven-plugin-testing-harness</artifactId>
+      <version>${maven-plugin-testing-harness.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.13.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-plugin-plugin</artifactId>
+        <version>3.6.0</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.1</version>
+        <configuration>
+          <source>11</source>
+          <target>11</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>${maven.javadoc.version}</version>
+        <configuration>
+          <linksource>true</linksource>
+          <quiet>true</quiet>
+          <links>
+            <link>http://docs.oracle.com/javase/8/docs/api/</link>
+            <link>http://docs.oracle.com/javaee/8/index.html</link>
+            <link>http://maven.apache.org/ref/3.6.0/maven-core/apidocs/</link>
+            <link>http://maven.apache.org/ref/3.6.0/maven-plugin-api/apidocs/</link>
+          </links>
+        </configuration>
+      </plugin>
+      <!--
+          Perform a release deployment:
+          $ mvn release:clean release:prepare
+          $ mvn release:perform
+      -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>3.0.0-M1</version>
+        <configuration>
+          <releaseProfiles>release</releaseProfiles>
+          <goals>deploy</goals>
+        </configuration>
+      </plugin>
+      <!--
+          Release the deployment to the central repository (automatically done by mvn release:perform):
+          $ cd target/checkout
+          $ mvn nexus-staging:release
+      -->
+      <plugin>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>nexus-staging-maven-plugin</artifactId>
+        <version>1.6.7</version>
+        <extensions>true</extensions>
+        <configuration>
+          <serverId>ossrh</serverId>
+          <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+          <autoReleaseAfterClose>true</autoReleaseAfterClose>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>3.1.1</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>3.7.1</version>
+      </plugin>
+    </plugins>
+  </build>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-plugin-plugin</artifactId>
+        <version>3.6.0</version>
+      </plugin>
+    </plugins>
+  </reporting>
+
+  <profiles>
+    <profile>
+      <id>release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <version>3.2.0</version>
+            <executions>
+              <execution>
+                <id>attach-sources</id>
+                <goals>
+                  <goal>jar-no-fork</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>${maven.javadoc.version}</version>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.6</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+</project>

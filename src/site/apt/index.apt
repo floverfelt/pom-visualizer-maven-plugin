@@ -1,0 +1,32 @@
+ ------
+ Introduction
+ ------
+ Florian Overfelt
+ ------
+ 2022-03-24
+ ------
+
+
+Pom Visualizer Maven Plugin
+
+
+* Goals Overview
+
+
+* Usage
+
+  General instructions on how to use the Plugin Name can be found on the {{{usage.html}usage page}}. Some more
+  specific use cases are described in the examples given below.
+
+  If you feel like the plugin is missing a feature or has a defect, you can fill a feature request or bug report in the
+  {{{https://github.com/floverfelt/...}issue management system}}. When creating a new issue, please provide a comprehensive description of your
+  concern. Especially for fixing bugs it is crucial that the developers can reproduce your problem. For this reason,
+  entire debug logs, POMs or most preferably little demo projects attached to the issue are very much appreciated.
+  Of course, patches are welcome, too. Contributors can check out the project from our
+  {{{https://github.com/floverfelt/...}source repository}}.
+
+* Examples
+
+  Basic syntax and configurations can be found at:
+
+  * {{{./examples/basic.html}Basic Configurations}}
