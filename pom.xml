@@ -4,7 +4,7 @@
 
   <groupId>io.github.floverfelt</groupId>
   <artifactId>pom-visualizer-maven-plugin</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
   <packaging>maven-plugin</packaging>
 
   <name>Pom Visualizer Maven Plugin</name>
