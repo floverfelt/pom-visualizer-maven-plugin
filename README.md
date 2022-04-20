@@ -133,14 +133,14 @@ If you'd like to add the plugin as a part of your build lifecycle, this is a sam
 
 This plugin is bound to no lifecycle phase by default.
 
-Since it hooks directly into your POMs execution the pom-visualizer-maven-plugin *is* profile sensitive. 
-This means that if you execute it with different profiles it *will* produce different output.
+Since it hooks directly into your POMs execution the pom-visualizer-maven-plugin **is** profile sensitive. 
+This means that if you execute it with different profiles it **will** produce different output.
 Likewise, it will inherit plugin executions from parent poms.
 
 The output markdown and associated HTML/JS files are stored in your build's output directory in a folder labeled pom-visualizer-maven-plugin
 
 If executed in a multi-module POM, it will produce a visualization for each sub-project. 
-*WARNING*: This can result in a large number of browser tabs being opened if you don't specify the openAfterExecution flag.
+**WARNING**: This can result in a large number of browser tabs being opened if you don't specify the openAfterExecution flag.
 
 ## Contribution
 
