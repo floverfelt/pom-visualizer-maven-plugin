@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Visualization generated with mermaid: https://github.com/mermaid-js/mermaid -->
+        <script src="mermaid.min.js"></script>
+        <script>
+            window.node_json=@node_json@
+            window.clean_lifecycle=`@clean@`
+            window.site_lifecycle=`@site@`
+            window.default_lifecycle=`@default@`
+        </script>
+        <script>
+            mermaid.initialize(
+                {
+                    startOnLoad: false,
+                    securityLevel: 'loose'
+                }
+            );
+        </script>
+        <title>pom-visualizer-maven-plugin</title>
+    </head>
+    <style>
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+        a:visited {
+            color:blue;
+        }
+        pre {
+            margin: 0;
+        }
+        #header {
+            display: flex;
+            justify-content: center;
+            align-items: baseline;
+        }
+        #key {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 1em;
+        }
+        .wrapper {
+            display: flex;
+        }
+        #lifecycle {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        #popup {
+            display: none;
+            position: fixed;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 0;
+            width: 50%;
+            height: 33%;
+            text-align: center;
+            background: #fff;
+            border: 1px solid lightslategrey;
+            border-radius: 2px;
+            box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+            overflow: scroll;
+        }
+        #popupInnerWrap {
+            margin: 1em;
+        }
+        #popupTitle {
+            font-size: 14pt;
+            padding: 0.33em;
+            border: 1px solid blue;
+            margin: auto;
+            width: fit-content;
+        }
+        #configXml {
+            margin-top: 1em;
+            text-align: left;
+        }
+        .mermaid {
+            display: flex;
+            justify-content: center;
+            padding-bottom: 33%;
+        }
+        .mb {
+            margin-bottom: 1em;
+        }
+        .jc {
+            justify-content: center;
+        }
+        .btn {
+            background-color: white;
+            color: black;
+            padding: 15px 32px;
+            text-align: center;
+            font-size: 16px;
+            border-radius: 3px;
+            border: 2px solid rgb(221, 17, 68, 0.75);
+            cursor: pointer;
+        }
+        .ml {
+            margin-left: 1em;
+        }
+        .mr {
+            margin-right: 1em;
+        }
+    </style>
+
+    <body>
+        <div id="header">
+            <h1>@artifact-id@</h1><h2>:@artifact-version@</h2>
+        </div>
+        <div id="key">
+            <div class="mb">
+                <span style="background-color: red; width: 5px;">&nbsp</span><span style="margin-left: 0.5em;">Phases are red. See <a href="https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html#Lifecycle_Reference" target="_blank">here</a></span>
+            </div>
+            <div class="mb">
+                <span style="background-color: blue; width: 5px;">&nbsp</span><span style="margin-left: 0.5em;">Plugins are blue. See <a href="https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html#plugins" target="_blank">here</a>. You can click a plugin to view its config.</span>
+            </div>
+            <div class="mb">
+                <span style="font-size: 1em;">Select a <a href="https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html#lifecycle-reference">lifecycle</a> to view it...</span>
+            </div>
+        </div>
+        <div class="wrapper jc mb">
+            <button class="btn" onclick="renderMermaid('clean')">clean</button>
+            <button class="btn ml mr" onclick="renderMermaid('default')">default</button>
+            <button class="btn" onclick="renderMermaid('site')">site</button>
+        </div>
+        <div class="wrapper">
+            <div id="lifecycle">
+                <div id="mermaid" class="mermaid">
+                </div>
+            </div>
+        </div>
+        <div id="popup">
+            <div id="popupInnerWrap">
+                <div id="popupTitle"></div>
+                <pre id="configXml"></pre>
+            </div>
+
+        </div>
+    </body>
+    <script>
+
+        const formatXML = function(xml, tab = '\t', nl = '\n') {
+            let formatted = '', indent = '';
+            const nodes = xml.slice(1, -1).split(/>\s*</);
+            if (nodes[0][0] === '?') formatted += '<' + nodes.shift() + '>' + nl;
+            for (let i = 0; i < nodes.length; i++) {
+                const node = nodes[i];
+                if (node[0] === '/') indent = indent.slice(tab.length); // decrease indent
+                formatted += indent + '<' + node + '>' + nl;
+                if (node[0] !== '/' && node[node.length - 1] !== '/' && node.indexOf('</') === -1) indent += tab; // increase indent
+            }
+            return formatted;
+        }
+
+        const clearPopup = function() {
+            document.getElementById('popup').style.display = ''
+        }
+
+        window.addEventListener('click', e => {
+            if (!document.getElementById('popup').contains(e.target)){
+                clearPopup()
+            }
+        });
+
+        const renderPopup = function(nodeId) {
+            const nodeJson = JSON.parse(window.node_json[`${nodeId}`])
+            let configXml = nodeJson.config
+            if (configXml === '') {
+                configXml = "No user defined configuration."
+            } else {
+                configXml = formatXML(configXml)
+            }
+            document.getElementById('popupTitle').innerText = `${nodeJson.id}:${nodeJson.execId}`
+            const popupHtml = document.getElementById('popup')
+            popupHtml.style.display = 'inline-block'
+            const configXmlHtml = document.getElementById('configXml')
+            configXmlHtml.textContent = configXml
+        }
+
+        const renderMermaid = function(lifecycle) {
+            let md;
+            if (lifecycle === 'default') {
+                md = window.default_lifecycle
+            }
+            if (lifecycle === 'clean') {
+                md = window.clean_lifecycle
+            }
+            if (lifecycle === 'site') {
+                md = window.site_lifecycle
+            }
+            const ele = document.getElementById('mermaid')
+            ele.removeAttribute('data-processed')
+            ele.innerHTML = md
+            mermaid.init(undefined, ele)
+            clearPopup()
+            attachClickHandlers()
+        }
+
+        const attachClickHandlers = function() {
+            const nodeIds = Object.keys(window.node_json)
+            const displayedNodes = []
+            nodeIds.forEach(id => {
+                const query = document.querySelectorAll(`[id^='flowchart-${id}']`)
+                if (query.length > 0) {
+                    query.forEach(item => {
+                        displayedNodes.push({
+                            id: id,
+                            html: item
+                        })
+                    })
+                }
+            })
+            displayedNodes.forEach(node => {
+                node.html.style.cursor = 'pointer'
+                node.html.onclick = event => {
+                    event.stopPropagation()
+                    renderPopup(node.id)
+                }
+            })
+        }
+
+        // Actually init mermaid...
+        renderMermaid('default')
+    </script>
+</html>
+
+
