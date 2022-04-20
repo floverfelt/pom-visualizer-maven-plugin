@@ -10,7 +10,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
   <packaging>maven-plugin</packaging>
 
   <name>Pom Visualizer Maven Plugin</name>
-  <description>A plugin for replacing content in files, filenames, and directories.</description>
+  <description>A plugin for visualizing a maven POM.</description>
   <url>https://github.com/floverfelt/pom-visualizer-maven-plugin</url>
 
   <licenses>
@@ -129,7 +129,6 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
           <quiet>true</quiet>
           <links>
             <link>https://docs.oracle.com/en/java/javase/11/docs/api/</link>
-            <link>https://docs.oracle.com/en/java/javase/11/docs/api/index.html</link>
             <link>http://maven.apache.org/ref/3.6.0/maven-core/apidocs/</link>
             <link>http://maven.apache.org/ref/3.6.0/maven-plugin-api/apidocs/</link>
           </links>
