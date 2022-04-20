@@ -6,7 +6,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/ma
 
   <groupId>io.github.floverfelt</groupId>
   <artifactId>pom-visualizer-maven-plugin</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.2-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
 
   <name>Pom Visualizer Maven Plugin</name>
